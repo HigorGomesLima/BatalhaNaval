@@ -1,4 +1,8 @@
 package org.edwintumax.interfaces;
-public interface Observer {
-    public void actualizar();
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface Observer extends Remote {
+    public void actualizar() throws RemoteException;
 }

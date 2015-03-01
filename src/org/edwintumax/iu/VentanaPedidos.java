@@ -1,6 +1,8 @@
 package org.edwintumax.iu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -9,29 +11,32 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import org.edwintumax.bean.TasaDolar;
+import org.edwintumax.db.GestorDeClientes;
+import org.edwintumax.interfaces.Observable;
 import org.edwintumax.interfaces.Observer;
 import org.edwintumax.modelo.ModeloTasaDolar;
-public class VentanaPedidos extends JFrame implements Observer {
-    /**
-	 * 
-	 */
+import org.edwintumax.util.Util;
+public class VentanaPedidos extends JFrame implements Observable {
 	private static final long serialVersionUID = 1L;
 	private JScrollPane scrollPanel;
     private JTable tabla;
     private ModeloTasaDolar modelo;    
     private JButton btnAgregar;
+    private GestorDeClientes clientes;
     public VentanaPedidos() {
         this.setTitle("Ventana de Pedidos");
         this.setLayout(null);
-        modelo = new ModeloTasaDolar();
+        modelo = ModeloTasaDolar.getInstancia();
+        clientes = GestorDeClientes.getInstancia();
         tabla = new JTable();
         tabla.setModel(modelo);
-        modelo.actualizarDatos();
+        modelo.actualizarDatos();        
         btnAgregar = new JButton("Actualizar Tasa");
         btnAgregar.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 String nuevoValor = javax.swing.JOptionPane.showInputDialog("Nuevo valor");
-                modelo.agregar(new TasaDolar(Double.parseDouble(nuevoValor),new Date()));
+				modelo.agregar(new TasaDolar(Double.parseDouble(nuevoValor),new Date()));
+				notificar();
             }
         });
         btnAgregar.setBounds(5,270,160,40);
@@ -44,7 +49,35 @@ public class VentanaPedidos extends JFrame implements Observer {
         this.setSize(500,350);
         this.setVisible(true);
     }
-    public void actualizar() {
-        modelo.actualizarDatos();
-    }
+
+    @Override
+	public void agregar(Observer observador) {
+		clientes.agregar(Util.getIp());	
+		
+	}
+	@Override
+	public void eliminar(Observer observador) {
+		clientes.remover(Util.getIp());	
+		
+	}
+	@Override
+	public void notificar() {
+		for(String ip: clientes.getTodos()){
+			System.out.println("Notificando a :" + ip);
+	        System.setSecurityManager(new RMISecurityManager());
+
+	        try 
+	        { 
+	        	Observer observador = (Observer) Naming.lookup( "//" +ip + "/tasa_dolar");         //objectname in registry 
+	           observador.actualizar(); 
+	        } 
+	        catch (Exception e) 
+	        { 
+	        	System.err.println("Error al notificar al ip " + ip + " (" + e + ")");
+	        	e.printStackTrace(); 
+	        } 
+			
+		}
+		
+	}
 }

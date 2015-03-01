@@ -1,7 +1,7 @@
 package org.edwintumax.bean;
 import java.util.Date;
 public class TasaDolar {
-    private int idTasa;
+	private int idTasa;
     private double tasa;
     private Date fecha;
     public TasaDolar() {

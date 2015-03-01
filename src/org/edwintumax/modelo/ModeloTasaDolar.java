@@ -4,17 +4,22 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 import javax.swing.table.AbstractTableModel;
+
 import org.edwintumax.bean.TasaDolar;
 import org.edwintumax.db.Conexion;
 public class ModeloTasaDolar extends AbstractTableModel {
-    /**
-	 * 
-	 */
+	private static ModeloTasaDolar instancia;
 	private static final long serialVersionUID = 1L;
 	private ArrayList<TasaDolar> listaTasaDolar;
     private String[] encabezados = {"idTasa","tasa","fecha"};
-    public ModeloTasaDolar() {
+    
+	public static synchronized ModeloTasaDolar getInstancia(){
+		return instancia == null ? instancia = new ModeloTasaDolar() : instancia; 
+	}
+
+    private ModeloTasaDolar() {
         listaTasaDolar = new ArrayList<TasaDolar>();
     }
     public String getColumnName(int columna){
@@ -50,8 +55,7 @@ public class ModeloTasaDolar extends AbstractTableModel {
         Conexion.getInstancia().
                 ejecutarSentencia("insert into tasadolar values(0," + 
                         tasa.getTasa() + ",'" + obtenerFecha(tasa.getFecha()) + "')");
-        actualizarDatos();
-        fireTableDataChanged();
+        actualizarDatos();        
     }
     public void actualizarDatos(){
         try{
@@ -61,8 +65,10 @@ public class ModeloTasaDolar extends AbstractTableModel {
                 listaTasaDolar.add(new TasaDolar(resultado.getInt("idTasa"),resultado.getDouble("tasa"),resultado.getDate("fecha")));
             }
         }catch(SQLException e){
+        	System.err.println("Error de conexión a base de datos: " + e);
             e.printStackTrace();
         }
+        fireTableDataChanged();
     }
     public static String obtenerFecha(Date fecha){
         String patron = "yyyy-MM-dd";
