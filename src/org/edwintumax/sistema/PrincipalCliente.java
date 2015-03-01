@@ -1,3 +1,7 @@
+/**
+ * @author Edwin Tumax
+ */
+
 package org.edwintumax.sistema;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
@@ -31,9 +35,9 @@ public class PrincipalCliente {
     
     public static void mostrarError(Exception e){
 		System.err.println("Error de RMI" + e);
-		System.err.println("Verifique que el comando rmiregistry está corriendo en este momento");
+		System.err.println("Verifique que el comando rmiregistry estï¿½ corriendo en este momento");
 		e.printStackTrace();
-		JOptionPane.showMessageDialog(null, "Error de ejecición: " + e +"\nVerifique el rmiregistry está corriendo y que el archivo configuracion.properties contiene la información correcta para conectar a la DB","Error al iniciar", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Error de ejeciciï¿½n: " + e +"\nVerifique el rmiregistry estï¿½ corriendo y que el archivo configuracion.properties contiene la informaciï¿½n correcta para conectar a la DB","Error al iniciar", JOptionPane.ERROR_MESSAGE);
 
     }
 }

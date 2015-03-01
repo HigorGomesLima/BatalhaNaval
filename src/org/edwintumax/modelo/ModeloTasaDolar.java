@@ -1,3 +1,7 @@
+/**
+ * @author Edwin Tumax
+ */
+
 package org.edwintumax.modelo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,7 +69,7 @@ public class ModeloTasaDolar extends AbstractTableModel {
                 listaTasaDolar.add(new TasaDolar(resultado.getInt("idTasa"),resultado.getDouble("tasa"),resultado.getDate("fecha")));
             }
         }catch(SQLException e){
-        	System.err.println("Error de conexión a base de datos: " + e);
+        	System.err.println("Error de conexiï¿½n a base de datos: " + e);
             e.printStackTrace();
         }
         fireTableDataChanged();

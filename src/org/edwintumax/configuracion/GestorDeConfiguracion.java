@@ -1,3 +1,8 @@
+/**
+ * @author Raydelto HernÃ¡ndez Perera
+ */
+
+
 package org.edwintumax.configuracion;
 
 import java.io.FileReader;
@@ -18,7 +23,7 @@ public class GestorDeConfiguracion {
 		try {
 			propiedades.load(new FileReader("configuracion.properties"));
 		} catch (IOException e) {
-			System.err.println("Error al leer archivo de configuración");
+			System.err.println("Error al leer archivo de configuraciï¿½n");
 			e.printStackTrace();
 		}
 	}

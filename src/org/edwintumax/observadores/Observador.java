@@ -1,3 +1,7 @@
+/**
+ * @author Edwin Tumax
+ */
+
 package org.edwintumax.observadores;
 
 import java.rmi.RemoteException;

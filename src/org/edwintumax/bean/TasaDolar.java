@@ -1,3 +1,8 @@
+/**
+ * @author Edwin Tumax
+ */
+
+
 package org.edwintumax.bean;
 import java.util.Date;
 public class TasaDolar {

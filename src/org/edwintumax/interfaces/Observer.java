@@ -1,3 +1,7 @@
+/**
+ * @author Edwin Tumax
+ */
+
 package org.edwintumax.interfaces;
 
 import java.rmi.Remote;

@@ -1,3 +1,7 @@
+/**
+ * @author Edwin Tumax
+ */
+
 package org.edwintumax.db;
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,3 +1,7 @@
+/**
+ * @author Raydelto HernÃ¡ndez Perera
+ */
+
 package org.edwintumax.db;
 
 import java.sql.Connection;
@@ -47,7 +51,7 @@ public class GestorDeClientes {
 			ppdRemoverCliente.setString(1, ip);
 			ppdRemoverCliente.execute();
 		} catch (Exception e) {
-			System.err.println("Error mientras removía IP");
+			System.err.println("Error mientras removï¿½a IP");
 			e.printStackTrace();
 		}		
 	}

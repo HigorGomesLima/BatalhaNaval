@@ -1,3 +1,7 @@
+/**
+ * @author Edwin Tumax
+ */
+
 package org.edwintumax.iu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

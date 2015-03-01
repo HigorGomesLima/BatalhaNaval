@@ -1,3 +1,7 @@
+/**
+ * @author Edwin Tumax
+ */
+
 package org.edwintumax.interfaces;
 public interface Observable {
     public void agregar(Observer observador);

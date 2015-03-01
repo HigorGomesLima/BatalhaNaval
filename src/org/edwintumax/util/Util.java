@@ -1,3 +1,7 @@
+/**
+ * @author Raydelto Hernández Perera
+ */
+
 package org.edwintumax.util;
 
 import java.net.InetAddress;
