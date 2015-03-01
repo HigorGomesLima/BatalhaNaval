@@ -10,6 +10,7 @@ import java.net.SocketException;
 import java.util.Enumeration;
 
 public class Util {
+	//TODO: Pulir este código para que obtenga el IP del computador actual de una manera más efectiva
 	public static String getIp(){
 		   String ip=null;
 		    try {

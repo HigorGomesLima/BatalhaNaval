@@ -17,7 +17,11 @@ public class PrincipalCliente {
     	Observador observador = null;
     	try {
     		System.setProperty("java.security.policy","file:./seguridad.policy");
-
+    		/*Hicimos el código lo más simplista posible,
+    		estamos asumiendo que tu computador solamente tiene una tarjeta de red, 
+    		en caso contrario échale un vistazo al código del método estático getIp de la clase Util 
+    		para que se ajuste a tu necesidad*/ 
+    		System.setProperty("java.rmi.server.hostname",Util.getIp());
 			observador = new Observador();
 			GestorDeClientes.getInstancia().agregar(Util.getIp());
 			Naming.bind("//localhost/tasa_dolar", observador);
