@@ -57,7 +57,7 @@ public class Jogador {
                 }
                 if (controle) {
                     for (int j = coluna; j < novo.getNível() + coluna; j++) {
-                        oceano[linha][j] = novo.getId();
+                        oceano[linha][j] = ((novo.getId()+1)*(-100) )- (j-coluna);
                     }
                     novo.setPosicao(posicao);
                     novo.setX(linha);
@@ -76,7 +76,7 @@ public class Jogador {
                 }
                 if (controle) {
                     for (int j = linha; j < novo.getNível() + linha; j++) {
-                        oceano[j][coluna] = novo.getId();
+                        oceano[j][coluna] = ((novo.getId()+1) *(-100)) -10 - (j-linha);
                     }
                     novo.setPosicao(posicao);
                     novo.setX(linha);

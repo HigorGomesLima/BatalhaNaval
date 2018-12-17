@@ -76,7 +76,7 @@ public class Tabuleiro {
         largura = aLargura;
     }
 
-    private static Jogador getJogador(String nome) {
+    public static Jogador getJogador(String nome) {
         Jogador r = null;
         if(nome.equals(p1.getNome()))
             r = p1;

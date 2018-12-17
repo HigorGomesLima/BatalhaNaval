@@ -21,6 +21,7 @@ public class Tela extends javax.swing.JFrame {
     private String nome;
     private int altura;
     private int largura;
+    private int etapa;
     private IconNaval fabricaImagem;
 
     public Tela() {
@@ -91,9 +92,9 @@ public class Tela extends javax.swing.JFrame {
             }
             modelo.addRow(linha);
         }
-            tabela.setRowHeight(30);
-        
-
+        tabela.setRowHeight(30);
+        this.informacao.setText("Seleciona o campo para inserir uma Fragata");
+        etapa = 0;
     }
 
     class ImageRenderer extends DefaultTableCellRenderer {
@@ -111,15 +112,15 @@ public class Tela extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        informacao = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
         lnome = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("Informacao");
+        informacao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        informacao.setText("Informacao");
 
         tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -129,6 +130,11 @@ public class Tela extends javax.swing.JFrame {
 
             }
         ));
+        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabela);
 
         lnome.setText("Nome");
@@ -141,9 +147,9 @@ public class Tela extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(informacao, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(lnome, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                .addComponent(lnome, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -155,13 +161,227 @@ public class Tela extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(lnome, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(informacao, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
+        int x = this.tabela.getSelectedRow();
+        int y = this.tabela.getSelectedColumn();
+        boolean r = false;
+        String opcao;
+        String[] d = {"horizontal","vertical"};
+        switch(etapa){
+            case 0:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
+                if(r){
+                    etapa = 1;
+                    this.informacao.setText("Seleciona o campo para inserir uma Fragata");
+                }
+                break;
+            case 1:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
+                if(r){
+                    etapa = 2;
+                    this.informacao.setText("Seleciona o campo para inserir uma Fragata");
+                }
+                break;
+            case 2:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
+                if(r){
+                    etapa = 3;
+                    this.informacao.setText("Seleciona o campo para inserir uma Fragata");
+                }
+                break;
+            case 3:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
+                if(r){
+                    etapa = 4;
+                    this.informacao.setText("Seleciona o campo para inserir uma Corveta");
+                }
+                break;
+            case 4:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
+                if(r){
+                    etapa = 5;
+                    this.informacao.setText("Seleciona o campo para inserir uma Corveta");
+                }
+                break;
+            case 5:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
+                if(r){
+                    etapa = 6;
+                    this.informacao.setText("Seleciona o campo para inserir uma Corveta");
+                }
+                break;
+            case 6:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
+                if(r){
+                    etapa = 7;
+                    this.informacao.setText("Seleciona o campo para inserir um Destroier");
+                }
+                break;
+            case 7:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
+                if(r){
+                    etapa = 8;
+                    this.informacao.setText("Seleciona o campo para inserir um Destroier");
+                }
+                break;
+            case 8:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "destroier", opcao.charAt(0));
+                if(r){
+                    etapa = 9;
+                    this.informacao.setText("Seleciona o campo para inserir um Destroier");
+                }
+                break;
+            case 9:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "destroier", opcao.charAt(0));
+                if(r){
+                    etapa = 10;
+                    this.informacao.setText("Seleciona o campo para inserir um Destroier");
+                }
+                break;
+            case 10:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "destroier", opcao.charAt(0));
+                if(r){
+                    etapa = 11;
+                    this.informacao.setText("Seleciona o campo para inserir um Cruzador");
+                }
+                break;
+            case 11:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "cruzador", opcao.charAt(0));
+                if(r){
+                    etapa = 12;
+                    this.informacao.setText("Seleciona o campo para inserir um Cruzador");
+                }
+                break;
+            case 12:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "cruzador", opcao.charAt(0));
+                if(r){
+                    etapa = 13;
+                    this.informacao.setText("Seleciona o campo para inserir um Cruzador");
+                }
+                break;
+            case 13:
+                opcao = (String) JOptionPane.showInputDialog(null,
+                    "Escolha uma das opções",
+                    "Entrar",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null, d,
+                    d[0]);
+                r = Tabuleiro.inserirArma(nome, x, y, "cruzador", opcao.charAt(0));
+                if(r){
+                    etapa = 14;
+                    this.informacao.setText("Seleciona o campo para inserir um Submarino");
+                }
+                break;
+        }
+        atualizarMesa();
+    }//GEN-LAST:event_tabelaMouseClicked
+
+    public void atualizarMesa(){
+        DefaultTableModel modelo = (DefaultTableModel) this.tabela.getModel();
+        for(;tabela.getRowCount() > 0;){
+            modelo.removeRow(0);
+        }
+        modelo.fireTableStructureChanged();
+        for (int i = 0; i < largura; i++) {
+            tabela.getColumnModel().getColumn(i).setCellRenderer(new ImageRenderer());
+            tabela.getColumnModel().getColumn(i).setWidth(30);
+        }
+        for (int i = 0; i < altura; i++) {
+            Object[] linha = new Object[largura];
+            for(int j = 0;j < largura; j++){
+                int aux = Tabuleiro.getJogador(nome).getOceano()[i][j];
+                linha[j] = fabricaImagem.getImagem(aux+"");
+                //System.out.print(fabricaImagem.getImagem("bomba").toString());
+            }
+            modelo.addRow(linha);
+        }
+        tabela.setRowHeight(30);
+    }
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -192,7 +412,7 @@ public class Tela extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel informacao;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lnome;
     private javax.swing.JTable tabela;
