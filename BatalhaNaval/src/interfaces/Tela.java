@@ -19,14 +19,16 @@ import javax.swing.table.TableColumnModel;
 public class Tela extends javax.swing.JFrame {
 
     private String nome;
+    private String nome2;
     private int altura;
     private int largura;
     private int etapa;
+    private boolean remoto;
     private IconNaval fabricaImagem;
+    Conexao cc;
 
     public Tela() {
         initComponents();
-        Conexao cc;
         Object[] a = {"Criar um Novo Jogo", "Conectar em um ja existente"};
         boolean controle0 = false;
         do {
@@ -41,22 +43,28 @@ public class Tela extends javax.swing.JFrame {
                 boolean controle = true;
                 do {
                     String nome = null;
+                    remoto = false;
                     String tamanhoH = JOptionPane.showInputDialog("Digite a altura do oceano");
                     String tamanhoL = JOptionPane.showInputDialog("Digite a largura do oceano");
                     nome = JOptionPane.showInputDialog("Digite o nome");
-                    Tabuleiro.newGame(Integer.parseInt(tamanhoH), Integer.parseInt(tamanhoL), nome);
+                    Tabuleiro.newGame(Integer.parseInt(tamanhoH), Integer.parseInt(tamanhoL), ("1 " + nome));
                     if (Tabuleiro.getGame() == null || "".equals(nome)) {
                         JOptionPane.showMessageDialog(null, "Erro na criação");
                     } else {
-                        this.nome = nome;
+                        this.nome = ("1 " + nome);
                         this.altura = Integer.parseInt(tamanhoH);
                         this.largura = Integer.parseInt(tamanhoL);
                         controle = false;
                     }
                 } while (controle);
                 try {
+                    JOptionPane.showMessageDialog(null, "Aguarde o jogador 2 se conectar");
                     cc = new Conexao(7777);
-                    JOptionPane.showMessageDialog(null, "Servidor criado" + cc.getIp());
+                    nome2 = "2 "+ cc.receberMensagem();
+                    remoto = false;
+                    JOptionPane.showMessageDialog(null, "Jogador " + nome2 + " conectado");
+                    Tabuleiro.jogado2("2 " + nome2);
+                    cc.enviarMensagem(altura + ";" + largura);
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Erro na conexao " + ex.getMessage());
                     controle0 = true;
@@ -65,21 +73,29 @@ public class Tela extends javax.swing.JFrame {
                 String ip = JOptionPane.showInputDialog("Digite o IP");
                 try {
                     cc = new Conexao(ip, 7777);
+                    remoto = true;
+                    String nome = JOptionPane.showInputDialog("Digite o nome");
+                    cc.enviarMensagem(nome);
+                    this.nome = "2 " + nome;
+                    String b = cc.receberMensagem();
+                    String[] c = b.split(";");
+                    altura = Integer.parseInt(c[0]);
+                    largura = Integer.parseInt(c[1]);
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Erro na conexao " + ex.getMessage());
                     controle0 = true;
                 }
             }
         } while (controle0);
-        this.setPreferredSize(new Dimension(altura*30*3,largura*30*3));
+        System.out.println("teste");
+        this.setPreferredSize(new Dimension(altura * 30 * 3, largura * 30 * 3));
         fabricaImagem = new IconNaval();
         this.lnome.setName(nome);
         //CRIAR TABELA
-        tabela.setPreferredSize(new Dimension(altura*30,largura*30));
+        tabela.setPreferredSize(new Dimension(altura * 30, largura * 30));
         DefaultTableModel modelo = (DefaultTableModel) this.tabela.getModel();
         for (int i = 0; i < largura; i++) {
             modelo.addColumn("");
-            //  tabela.getColumnModel().getColumn(0).setCellRenderer(new ImageRender());
         }
         for (int i = 0; i < largura; i++) {
             tabela.getColumnModel().getColumn(i).setCellRenderer(new ImageRenderer());
@@ -171,199 +187,553 @@ public class Tela extends javax.swing.JFrame {
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
         int x = this.tabela.getSelectedRow();
         int y = this.tabela.getSelectedColumn();
-        boolean r = false;
-        String opcao;
-        String[] d = {"horizontal","vertical"};
-        switch(etapa){
-            case 0:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
-                if(r){
-                    etapa = 1;
-                    this.informacao.setText("Seleciona o campo para inserir uma Fragata");
-                }
-                break;
-            case 1:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
-                if(r){
-                    etapa = 2;
-                    this.informacao.setText("Seleciona o campo para inserir uma Fragata");
-                }
-                break;
-            case 2:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
-                if(r){
-                    etapa = 3;
-                    this.informacao.setText("Seleciona o campo para inserir uma Fragata");
-                }
-                break;
-            case 3:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
-                if(r){
-                    etapa = 4;
-                    this.informacao.setText("Seleciona o campo para inserir uma Corveta");
-                }
-                break;
-            case 4:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
-                if(r){
-                    etapa = 5;
-                    this.informacao.setText("Seleciona o campo para inserir uma Corveta");
-                }
-                break;
-            case 5:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
-                if(r){
-                    etapa = 6;
-                    this.informacao.setText("Seleciona o campo para inserir uma Corveta");
-                }
-                break;
-            case 6:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
-                if(r){
-                    etapa = 7;
-                    this.informacao.setText("Seleciona o campo para inserir um Destroier");
-                }
-                break;
-            case 7:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
-                if(r){
-                    etapa = 8;
-                    this.informacao.setText("Seleciona o campo para inserir um Destroier");
-                }
-                break;
-            case 8:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "destroier", opcao.charAt(0));
-                if(r){
-                    etapa = 9;
-                    this.informacao.setText("Seleciona o campo para inserir um Destroier");
-                }
-                break;
-            case 9:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "destroier", opcao.charAt(0));
-                if(r){
-                    etapa = 10;
-                    this.informacao.setText("Seleciona o campo para inserir um Destroier");
-                }
-                break;
-            case 10:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "destroier", opcao.charAt(0));
-                if(r){
-                    etapa = 11;
-                    this.informacao.setText("Seleciona o campo para inserir um Cruzador");
-                }
-                break;
-            case 11:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "cruzador", opcao.charAt(0));
-                if(r){
-                    etapa = 12;
-                    this.informacao.setText("Seleciona o campo para inserir um Cruzador");
-                }
-                break;
-            case 12:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "cruzador", opcao.charAt(0));
-                if(r){
-                    etapa = 13;
-                    this.informacao.setText("Seleciona o campo para inserir um Cruzador");
-                }
-                break;
-            case 13:
-                opcao = (String) JOptionPane.showInputDialog(null,
-                    "Escolha uma das opções",
-                    "Entrar",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null, d,
-                    d[0]);
-                r = Tabuleiro.inserirArma(nome, x, y, "cruzador", opcao.charAt(0));
-                if(r){
-                    etapa = 14;
-                    this.informacao.setText("Seleciona o campo para inserir um Submarino");
-                }
-                break;
+        if (!remoto) {
+            boolean r = false;
+            String opcao;
+            String[] d = {"horizontal", "vertical"};
+            switch (etapa) {
+                case 0:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
+                    if (r) {
+                        etapa = -1;
+                        this.informacao.setText("Aguarde o outro jogador");
+                    try {
+                        String b = cc.receberMensagem();
+                        String[] c = b.split(";");
+                        Tabuleiro.inserirArma(nome2, Integer.parseInt(c[0]), Integer.parseInt(c[1]), c[2], c[3].charAt(0));
+                    } catch (IOException ex) {
+                        this.informacao.setText("Erro na conexao !!!");
+                    }
+                        this.informacao.setText("Seleciona o campo para inserir uma Fragata");
+                    }
+                    break;
+                case 1:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
+                    if (r) {
+                        etapa = 2;
+                        this.informacao.setText("Seleciona o campo para inserir uma Fragata");
+                    }
+                    break;
+                case 2:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
+                    if (r) {
+                        etapa = 3;
+                        this.informacao.setText("Seleciona o campo para inserir uma Fragata");
+                    }
+                    break;
+                case 3:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
+                    if (r) {
+                        etapa = 4;
+                        this.informacao.setText("Seleciona o campo para inserir uma Corveta");
+                    }
+                    break;
+                case 4:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
+                    if (r) {
+                        etapa = 5;
+                        this.informacao.setText("Seleciona o campo para inserir uma Corveta");
+                    }
+                    break;
+                case 5:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
+                    if (r) {
+                        etapa = 6;
+                        this.informacao.setText("Seleciona o campo para inserir uma Corveta");
+                    }
+                    break;
+                case 6:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
+                    if (r) {
+                        etapa = 7;
+                        this.informacao.setText("Seleciona o campo para inserir um Destroier");
+                    }
+                    break;
+                case 7:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
+                    if (r) {
+                        etapa = 8;
+                        this.informacao.setText("Seleciona o campo para inserir um Destroier");
+                    }
+                    break;
+                case 8:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "destroier", opcao.charAt(0));
+                    if (r) {
+                        etapa = 9;
+                        this.informacao.setText("Seleciona o campo para inserir um Destroier");
+                    }
+                    break;
+                case 9:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "destroier", opcao.charAt(0));
+                    if (r) {
+                        etapa = 10;
+                        this.informacao.setText("Seleciona o campo para inserir um Destroier");
+                    }
+                    break;
+                case 10:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "destroier", opcao.charAt(0));
+                    if (r) {
+                        etapa = 11;
+                        this.informacao.setText("Seleciona o campo para inserir um Cruzador");
+                    }
+                    break;
+                case 11:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "cruzador", opcao.charAt(0));
+                    if (r) {
+                        etapa = 12;
+                        this.informacao.setText("Seleciona o campo para inserir um Cruzador");
+                    }
+                    break;
+                case 12:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "cruzador", opcao.charAt(0));
+                    if (r) {
+                        etapa = 13;
+                        this.informacao.setText("Seleciona o campo para inserir um Cruzador");
+                    }
+                    break;
+                case 13:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "cruzador", opcao.charAt(0));
+                    if (r) {
+                        etapa = 14;
+                        this.informacao.setText("Seleciona o campo para inserir um Submarino");
+                    }
+                    break;
+                case 14:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "submarino", opcao.charAt(0));
+                    if (r) {
+                        etapa = 15;
+                        this.informacao.setText("Seleciona o campo para inserir um Submarino");
+                    }
+                    break;
+                case 15:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "submarino", opcao.charAt(0));
+                    if (r) {
+                        etapa = 16;
+                        this.informacao.setText("Seleciona o campo para inserir um Encouracado");
+                    }
+                    break;
+                case 16:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "encouracado", opcao.charAt(0));
+                    if (r) {
+                        etapa = 17;
+                        this.informacao.setText("Seleciona o campo para inserir um Encouracado");
+                    }
+                    break;
+                case 17:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "encouracado", opcao.charAt(0));
+                    if (r) {
+                        etapa = 18;
+                        this.informacao.setText("Seleciona o campo para inserir um Porta-Avioes");
+                    }
+                    break;
+                case 18:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "portaaviao", opcao.charAt(0));
+                    if (r) {
+                        etapa = 19;
+                        this.informacao.setText("Seleciona o campo para inserir um Porta-Avioes");
+                    }
+                    break;
+                case 19:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "portaaviao", opcao.charAt(0));
+                    if (r) {
+                        etapa = 20;
+                        this.informacao.setText("Aguardando outro jogador !!");
+                    }
+                    break;
+            }
+        }else{
+            boolean r = false;
+            String opcao;
+            String[] d = {"horizontal", "vertical"};
+            switch (etapa) {
+                case 0:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
+                    if (r) {
+                        etapa = 1;
+                        this.informacao.setText("Seleciona o campo para inserir uma Fragata");
+                    }
+                    break;
+                case 1:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
+                    if (r) {
+                        etapa = 2;
+                        this.informacao.setText("Seleciona o campo para inserir uma Fragata");
+                    }
+                    break;
+                case 2:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
+                    if (r) {
+                        etapa = 3;
+                        this.informacao.setText("Seleciona o campo para inserir uma Fragata");
+                    }
+                    break;
+                case 3:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "fragata", opcao.charAt(0));
+                    if (r) {
+                        etapa = 4;
+                        this.informacao.setText("Seleciona o campo para inserir uma Corveta");
+                    }
+                    break;
+                case 4:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
+                    if (r) {
+                        etapa = 5;
+                        this.informacao.setText("Seleciona o campo para inserir uma Corveta");
+                    }
+                    break;
+                case 5:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
+                    if (r) {
+                        etapa = 6;
+                        this.informacao.setText("Seleciona o campo para inserir uma Corveta");
+                    }
+                    break;
+                case 6:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
+                    if (r) {
+                        etapa = 7;
+                        this.informacao.setText("Seleciona o campo para inserir um Destroier");
+                    }
+                    break;
+                case 7:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "corveta", opcao.charAt(0));
+                    if (r) {
+                        etapa = 8;
+                        this.informacao.setText("Seleciona o campo para inserir um Destroier");
+                    }
+                    break;
+                case 8:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "destroier", opcao.charAt(0));
+                    if (r) {
+                        etapa = 9;
+                        this.informacao.setText("Seleciona o campo para inserir um Destroier");
+                    }
+                    break;
+                case 9:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "destroier", opcao.charAt(0));
+                    if (r) {
+                        etapa = 10;
+                        this.informacao.setText("Seleciona o campo para inserir um Destroier");
+                    }
+                    break;
+                case 10:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "destroier", opcao.charAt(0));
+                    if (r) {
+                        etapa = 11;
+                        this.informacao.setText("Seleciona o campo para inserir um Cruzador");
+                    }
+                    break;
+                case 11:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "cruzador", opcao.charAt(0));
+                    if (r) {
+                        etapa = 12;
+                        this.informacao.setText("Seleciona o campo para inserir um Cruzador");
+                    }
+                    break;
+                case 12:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "cruzador", opcao.charAt(0));
+                    if (r) {
+                        etapa = 13;
+                        this.informacao.setText("Seleciona o campo para inserir um Cruzador");
+                    }
+                    break;
+                case 13:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "cruzador", opcao.charAt(0));
+                    if (r) {
+                        etapa = 14;
+                        this.informacao.setText("Seleciona o campo para inserir um Submarino");
+                    }
+                    break;
+                case 14:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "submarino", opcao.charAt(0));
+                    if (r) {
+                        etapa = 15;
+                        this.informacao.setText("Seleciona o campo para inserir um Submarino");
+                    }
+                    break;
+                case 15:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "submarino", opcao.charAt(0));
+                    if (r) {
+                        etapa = 16;
+                        this.informacao.setText("Seleciona o campo para inserir um Encouracado");
+                    }
+                    break;
+                case 16:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "encouracado", opcao.charAt(0));
+                    if (r) {
+                        etapa = 17;
+                        this.informacao.setText("Seleciona o campo para inserir um Encouracado");
+                    }
+                    break;
+                case 17:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "encouracado", opcao.charAt(0));
+                    if (r) {
+                        etapa = 18;
+                        this.informacao.setText("Seleciona o campo para inserir um Porta-Avioes");
+                    }
+                    break;
+                case 18:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "portaaviao", opcao.charAt(0));
+                    if (r) {
+                        etapa = 19;
+                        this.informacao.setText("Seleciona o campo para inserir um Porta-Avioes");
+                    }
+                    break;
+                case 19:
+                    opcao = (String) JOptionPane.showInputDialog(null,
+                            "Escolha uma das opções",
+                            "Entrar",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, d,
+                            d[0]);
+                    r = Tabuleiro.inserirArma(nome, x, y, "portaaviao", opcao.charAt(0));
+                    if (r) {
+                        etapa = 20;
+                        this.informacao.setText("Aguardando outro jogador !!");
+                    }
+                    break;
+            }
         }
         atualizarMesa();
     }//GEN-LAST:event_tabelaMouseClicked
 
-    public void atualizarMesa(){
+    public void atualizarMesa() {
         DefaultTableModel modelo = (DefaultTableModel) this.tabela.getModel();
-        for(;tabela.getRowCount() > 0;){
+        for (; tabela.getRowCount() > 0;) {
             modelo.removeRow(0);
         }
         modelo.fireTableStructureChanged();
@@ -373,15 +743,16 @@ public class Tela extends javax.swing.JFrame {
         }
         for (int i = 0; i < altura; i++) {
             Object[] linha = new Object[largura];
-            for(int j = 0;j < largura; j++){
+            for (int j = 0; j < largura; j++) {
                 int aux = Tabuleiro.getJogador(nome).getOceano()[i][j];
-                linha[j] = fabricaImagem.getImagem(aux+"");
+                linha[j] = fabricaImagem.getImagem(aux + "");
                 //System.out.print(fabricaImagem.getImagem("bomba").toString());
             }
             modelo.addRow(linha);
         }
         tabela.setRowHeight(30);
     }
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

@@ -12,9 +12,9 @@ public class IconNaval {
     private List<ImageIcon> corveta;
     private List<ImageIcon> destroier;
     private List<ImageIcon> cruzador;
-    private ImageIcon[] submarino;
-    private ImageIcon[] encouracado;
-    private ImageIcon[] portaaviao;
+    private List<ImageIcon> submarino;
+    private List<ImageIcon> encouracado;
+    private List<ImageIcon> portaaviao;
     
     public IconNaval(){
         agua = new ImageIcon(getClass().getResource("imagem/agua.png"));
@@ -43,6 +43,33 @@ public class IconNaval {
         cruzador.add(new ImageIcon(getClass().getResource("imagem/cruzadorverticalpt1.png")));
         cruzador.add(new ImageIcon(getClass().getResource("imagem/cruzadorverticalpt2.png")));
         cruzador.add(new ImageIcon(getClass().getResource("imagem/cruzadorverticalpt3.png")));
+        submarino = new ArrayList<>();
+        submarino.add(new ImageIcon(getClass().getResource("imagem/submarinohorizontalpt1.png")));
+        submarino.add(new ImageIcon(getClass().getResource("imagem/submarinohorizontalpt2.png")));
+        submarino.add(new ImageIcon(getClass().getResource("imagem/submarinohorizontalpt3.png")));
+        submarino.add(new ImageIcon(getClass().getResource("imagem/submarinohorizontalpt4.png")));
+        submarino.add(new ImageIcon(getClass().getResource("imagem/submarinoverticalpt1.png")));
+        submarino.add(new ImageIcon(getClass().getResource("imagem/submarinoverticalpt2.png")));
+        submarino.add(new ImageIcon(getClass().getResource("imagem/submarinoverticalpt3.png")));
+        submarino.add(new ImageIcon(getClass().getResource("imagem/submarinoverticalpt4.png")));
+        encouracado = new ArrayList<>();
+        encouracado.add(new ImageIcon(getClass().getResource("imagem/encouraçadohorizontalpt1.png")));
+        encouracado.add(new ImageIcon(getClass().getResource("imagem/encouraçadohorizontalpt2.png")));
+        encouracado.add(new ImageIcon(getClass().getResource("imagem/encouraçadohorizontalpt3.png")));
+        encouracado.add(new ImageIcon(getClass().getResource("imagem/encouraçadohorizontalpt4.png")));
+        encouracado.add(new ImageIcon(getClass().getResource("imagem/encouraçadoverticalpt1.png")));
+        encouracado.add(new ImageIcon(getClass().getResource("imagem/encouraçadoverticalpt2.png")));
+        encouracado.add(new ImageIcon(getClass().getResource("imagem/encouraçadoverticalpt3.png")));
+        encouracado.add(new ImageIcon(getClass().getResource("imagem/encouraçadoverticalpt4.png")));
+        portaaviao = new ArrayList<>();
+        portaaviao.add(new ImageIcon(getClass().getResource("imagem/portaavioeshorizontalpt1.png")));
+        portaaviao.add(new ImageIcon(getClass().getResource("imagem/portaavioeshorizontalpt2.png")));
+        portaaviao.add(new ImageIcon(getClass().getResource("imagem/portaavioeshorizontalpt3.png")));
+        portaaviao.add(new ImageIcon(getClass().getResource("imagem/portaavioeshorizontalpt4.png")));
+        portaaviao.add(new ImageIcon(getClass().getResource("imagem/portaavioesverticalpt1.png")));
+        portaaviao.add(new ImageIcon(getClass().getResource("imagem/portaavioesverticalpt2.png")));
+        portaaviao.add(new ImageIcon(getClass().getResource("imagem/portaavioesverticalpt3.png")));
+        portaaviao.add(new ImageIcon(getClass().getResource("imagem/portaavioesverticalpt4.png")));
     }
    public ImageIcon getImagem(String nome){
        System.out.println(nome);
@@ -90,6 +117,54 @@ public class IconNaval {
             return cruzador.get(5);
         }else if("-1212".equals(nome) || "-1312".equals(nome) || "-1412".equals(nome)){
             return cruzador.get(3);
+        }else if("-1500".equals(nome) || "-1600".equals(nome)){
+            return submarino.get(0);
+        }else if("-1501".equals(nome) || "-1601".equals(nome)){
+            return submarino.get(1);
+        }else if("-1502".equals(nome) || "-1602".equals(nome)){
+            return submarino.get(2);
+        }else if("-1503".equals(nome) || "-1603".equals(nome)){
+            return submarino.get(3);
+        }else if("-1510".equals(nome) || "-1610".equals(nome)){
+            return submarino.get(4);
+        }else if("-1511".equals(nome) || "-1611".equals(nome)){
+            return submarino.get(5);
+        }else if("-1512".equals(nome) || "-1612".equals(nome)){
+            return submarino.get(6);
+        }else if("-1513".equals(nome) || "-1613".equals(nome)){
+            return submarino.get(7);
+        }else if("-1700".equals(nome) || "-1800".equals(nome)){
+            return encouracado.get(0);
+        }else if("-1701".equals(nome) || "-1801".equals(nome)){
+            return encouracado.get(1);
+        }else if("-1702".equals(nome) || "-1802".equals(nome)){
+            return encouracado.get(2);
+        }else if("-1703".equals(nome) || "-1803".equals(nome)){
+            return encouracado.get(3);
+        }else if("-1710".equals(nome) || "-1810".equals(nome)){
+            return encouracado.get(4);
+        }else if("-1711".equals(nome) || "-1811".equals(nome)){
+            return encouracado.get(5);
+        }else if("-1712".equals(nome) || "-1812".equals(nome)){
+            return encouracado.get(6);
+        }else if("-1713".equals(nome) || "-1813".equals(nome)){
+            return encouracado.get(7);
+        }else if("-1900".equals(nome) || "-2000".equals(nome)){
+            return portaaviao.get(0);
+        }else if("-1901".equals(nome) || "-2001".equals(nome)){
+            return portaaviao.get(1);
+        }else if("-1902".equals(nome) || "-2002".equals(nome)){
+            return portaaviao.get(2);
+        }else if("-1903".equals(nome) || "-2003".equals(nome)){
+            return portaaviao.get(3);
+        }else if("-1910".equals(nome) || "-2010".equals(nome)){
+            return portaaviao.get(4);
+        }else if("-1911".equals(nome) || "-2011".equals(nome)){
+            return portaaviao.get(5);
+        }else if("-1912".equals(nome) || "-2012".equals(nome)){
+            return portaaviao.get(6);
+        }else if("-1913".equals(nome) || "-2013".equals(nome)){
+            return portaaviao.get(7);
         }
         return null;
     }

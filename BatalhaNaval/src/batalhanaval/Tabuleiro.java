@@ -19,11 +19,15 @@ public class Tabuleiro {
     }
 
     public static void newGame(int h, int l, String nome) {
-        if (h > 9 && l > 9) {
+        if (h > 9 && l > 9 && h < 16 && l < 16) {
             if (mesa == null) {
                 mesa = new Tabuleiro(h, l, nome);
             }
         }
+    }
+    
+    public static void jogado2(String nome){
+        p2 = new Jogador(altura,largura,2,nome);
     }
 
     public static Tabuleiro getGame() {
